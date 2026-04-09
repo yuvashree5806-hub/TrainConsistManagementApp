@@ -1,5 +1,24 @@
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+// Bogie class (Custom Object)
+class Bogie {
+    String name;
+    int capacity;
+
+    // Constructor
+    public Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
+
+    // Display method
+    @Override
+    public String toString() {
+        return name + " (Capacity: " + capacity + ")";
+    }
+}
 
 public class TrainConsistManagementApp {
 
@@ -8,28 +27,28 @@ public class TrainConsistManagementApp {
         // Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create train formation using LinkedHashSet
-        Set<String> trainFormation = new LinkedHashSet<>();
+        // Create list of bogies
+        List<Bogie> bogies = new ArrayList<>();
 
-        // Adding bogies
-        System.out.println("\nAdding Bogies...");
-        trainFormation.add("Engine");
-        trainFormation.add("Sleeper");
-        trainFormation.add("Cargo");
-        trainFormation.add("Guard");
+        // Add bogies
+        System.out.println("\nAdding Passenger Bogies...");
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 60));
+        bogies.add(new Bogie("First Class", 40));
 
-        // Attempt to add duplicate
-        System.out.println("\nAttempting to add duplicate bogie: Sleeper");
-        boolean isAdded = trainFormation.add("Sleeper");
-
-        if (!isAdded) {
-            System.out.println("Duplicate bogie ignored!");
+        // Display before sorting
+        System.out.println("\nBefore Sorting:");
+        for (Bogie b : bogies) {
+            System.out.println(b);
         }
 
-        // Display final formation
-        System.out.println("\nFinal Train Formation (Maintains Order & Uniqueness):");
-        for (String bogie : trainFormation) {
-            System.out.println(bogie);
+        // Sort using Comparator (by capacity)
+        bogies.sort(Comparator.comparingInt(b -> b.capacity));
+
+        // Display after sorting
+        System.out.println("\nAfter Sorting by Capacity:");
+        for (Bogie b : bogies) {
+            System.out.println(b);
         }
     }
 }
