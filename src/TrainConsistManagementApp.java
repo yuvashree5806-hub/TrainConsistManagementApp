@@ -1,52 +1,44 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-// Bogie class
-class Bogie {
-    String name;
-    int capacity;
-
-    public Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
-    }
-
-    @Override
-    public String toString() {
-        return name + " (Capacity: " + capacity + ")";
-    }
-}
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
+        // Welcome message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create bogie list
-        List<Bogie> bogies = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
 
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 60));
-        bogies.add(new Bogie("First Class", 40));
+        // Input Train ID
+        System.out.print("\nEnter Train ID (Format: TRN-1234): ");
+        String trainId = scanner.nextLine();
 
-        // Apply Stream filter
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // Input Cargo Code
+        System.out.print("Enter Cargo Code (Format: PET-AB): ");
+        String cargoCode = scanner.nextLine();
 
-        // Display result
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        for (Bogie b : filteredBogies) {
-            System.out.println(b);
+        // Regex patterns
+        String trainPattern = "TRN-\\d{4}";
+        String cargoPattern = "PET-[A-Z]{2}";
+
+        // Validate using Pattern.matches()
+        boolean isTrainValid = Pattern.matches(trainPattern, trainId);
+        boolean isCargoValid = Pattern.matches(cargoPattern, cargoCode);
+
+        // Output results
+        if (isTrainValid) {
+            System.out.println("\nTrain ID is VALID ✅");
+        } else {
+            System.out.println("\nTrain ID is INVALID ❌");
         }
-    }
 
-    // Method for testing
-    public static List<Bogie> filterBogies(List<Bogie> bogies) {
-        return bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        if (isCargoValid) {
+            System.out.println("Cargo Code is VALID ✅");
+        } else {
+            System.out.println("Cargo Code is INVALID ❌");
+        }
+
+        scanner.close();
     }
 }
