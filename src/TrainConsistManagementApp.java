@@ -1,49 +1,33 @@
-// Custom Runtime Exception
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
-
-// Goods Bogie class
-class GoodsBogie {
-    String shape;   // Cylindrical / Rectangular
-    String cargo;
-
-    public GoodsBogie(String shape) {
-        this.shape = shape;
-    }
-
-    // Method to assign cargo safely
-    public void assignCargo(String cargo) {
-        // Rule: Rectangular bogie cannot carry Petroleum
-        if (shape.equals("Rectangular") && cargo.equals("Petroleum")) {
-            throw new CargoSafetyException("Unsafe cargo assignment: Petroleum cannot be loaded in Rectangular bogie");
-        }
-        this.cargo = cargo;
-        System.out.println("Cargo assigned: " + cargo + " to " + shape + " bogie");
-    }
-}
-
 public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
 
         System.out.println("=== Train Consist Management App ===");
 
-        GoodsBogie bogie = new GoodsBogie("Rectangular");
+        // Array of bogie capacities
+        int[] capacities = {72, 60, 40, 90, 55};
 
-        try {
-            // Attempt unsafe assignment
-            bogie.assignCargo("Petroleum");
+        // Bubble Sort
+        int n = capacities.length;
 
-        } catch (CargoSafetyException e) {
-            System.out.println("\nError: " + e.getMessage());
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
 
-        } finally {
-            System.out.println("\nOperation completed (logged in finally block)");
+                // Compare adjacent elements
+                if (capacities[j] > capacities[j + 1]) {
+
+                    // Swap
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
         }
 
-        System.out.println("\nProgram continues safely...");
+        // Display sorted capacities
+        System.out.println("\nSorted Bogie Capacities:");
+        for (int cap : capacities) {
+            System.out.println(cap);
+        }
     }
 }
