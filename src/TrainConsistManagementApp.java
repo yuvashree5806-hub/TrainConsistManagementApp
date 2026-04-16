@@ -1,27 +1,27 @@
-// Custom Exception
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String message) {
+// Custom Runtime Exception
+class CargoSafetyException extends RuntimeException {
+    public CargoSafetyException(String message) {
         super(message);
     }
 }
 
-// Passenger Bogie class
-class PassengerBogie {
-    String name;
-    int capacity;
+// Goods Bogie class
+class GoodsBogie {
+    String shape;   // Cylindrical / Rectangular
+    String cargo;
 
-    // Constructor with validation
-    public PassengerBogie(String name, int capacity) throws InvalidCapacityException {
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Invalid capacity for bogie: " + name);
-        }
-        this.name = name;
-        this.capacity = capacity;
+    public GoodsBogie(String shape) {
+        this.shape = shape;
     }
 
-    @Override
-    public String toString() {
-        return name + " (Capacity: " + capacity + ")";
+    // Method to assign cargo safely
+    public void assignCargo(String cargo) {
+        // Rule: Rectangular bogie cannot carry Petroleum
+        if (shape.equals("Rectangular") && cargo.equals("Petroleum")) {
+            throw new CargoSafetyException("Unsafe cargo assignment: Petroleum cannot be loaded in Rectangular bogie");
+        }
+        this.cargo = cargo;
+        System.out.println("Cargo assigned: " + cargo + " to " + shape + " bogie");
     }
 }
 
@@ -31,17 +31,17 @@ public class TrainConsistManagementApp {
 
         System.out.println("=== Train Consist Management App ===");
 
+        GoodsBogie bogie = new GoodsBogie("Rectangular");
+
         try {
-            // Valid bogie
-            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
-            System.out.println("Created: " + b1);
+            // Attempt unsafe assignment
+            bogie.assignCargo("Petroleum");
 
-            // Invalid bogie (will throw exception)
-            PassengerBogie b2 = new PassengerBogie("AC Chair", -10);
-            System.out.println("Created: " + b2);
-
-        } catch (InvalidCapacityException e) {
+        } catch (CargoSafetyException e) {
             System.out.println("\nError: " + e.getMessage());
+
+        } finally {
+            System.out.println("\nOperation completed (logged in finally block)");
         }
 
         System.out.println("\nProgram continues safely...");
