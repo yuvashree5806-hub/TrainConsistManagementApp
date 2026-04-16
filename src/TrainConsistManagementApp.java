@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TrainConsistManagementApp {
@@ -6,30 +7,44 @@ public class TrainConsistManagementApp {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Array of bogie IDs (unsorted)
+        // Sorted array of bogie IDs
         String[] bogieIds = {"B101", "B205", "B309", "B412", "B523"};
+
+        // Ensure sorted (safety step)
+        Arrays.sort(bogieIds);
 
         Scanner scanner = new Scanner(System.in);
 
         // Input search key
         System.out.print("\nEnter Bogie ID to search: ");
-        String searchKey = scanner.nextLine();
+        String key = scanner.nextLine();
 
+        int low = 0;
+        int high = bogieIds.length - 1;
         boolean found = false;
 
-        // Linear Search
-        for (String id : bogieIds) {
-            if (id.equals(searchKey)) {
+        // Binary Search
+        while (low <= high) {
+
+            int mid = (low + high) / 2;
+
+            int result = key.compareTo(bogieIds[mid]);
+
+            if (result == 0) {
                 found = true;
-                break; // early termination
+                break;
+            } else if (result > 0) {
+                low = mid + 1; // search right
+            } else {
+                high = mid - 1; // search left
             }
         }
 
         // Display result
         if (found) {
-            System.out.println("Bogie ID " + searchKey + " FOUND ✅");
+            System.out.println("Bogie ID " + key + " FOUND ✅");
         } else {
-            System.out.println("Bogie ID " + searchKey + " NOT FOUND ❌");
+            System.out.println("Bogie ID " + key + " NOT FOUND ❌");
         }
 
         scanner.close();
