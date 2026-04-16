@@ -1,4 +1,5 @@
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class TrainConsistManagementApp {
@@ -7,11 +8,8 @@ public class TrainConsistManagementApp {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Sorted array of bogie IDs
-        String[] bogieIds = {"B101", "B205", "B309", "B412", "B523"};
-
-        // Ensure sorted (safety step)
-        Arrays.sort(bogieIds);
+        // Create bogie list (currently empty to demonstrate exception)
+        List<String> bogieIds = new ArrayList<>();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -19,24 +17,18 @@ public class TrainConsistManagementApp {
         System.out.print("\nEnter Bogie ID to search: ");
         String key = scanner.nextLine();
 
-        int low = 0;
-        int high = bogieIds.length - 1;
+        // Defensive check (Fail-Fast)
+        if (bogieIds.isEmpty()) {
+            throw new IllegalStateException("Cannot perform search: No bogies available in the train.");
+        }
+
+        // Search logic (will not execute if list is empty)
         boolean found = false;
 
-        // Binary Search
-        while (low <= high) {
-
-            int mid = (low + high) / 2;
-
-            int result = key.compareTo(bogieIds[mid]);
-
-            if (result == 0) {
+        for (String id : bogieIds) {
+            if (id.equals(key)) {
                 found = true;
                 break;
-            } else if (result > 0) {
-                low = mid + 1; // search right
-            } else {
-                high = mid - 1; // search left
             }
         }
 
